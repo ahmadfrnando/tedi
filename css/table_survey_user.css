@@ -1,0 +1,70 @@
+table.table1 {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 80px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #f0f0f0;
+    }
+
+    table.table1 tr.header-row {
+      background-color: #1a5e1a;
+      /* hijau lebih soft */
+      color: #ffffff;
+      font-weight: bold;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    table.table1 tr {
+      border-bottom: 1px solid #2a2a2a;
+    }
+
+    table.table1 td {
+      padding: 12px 15px;
+      vertical-align: middle;
+      font-size: 14px;
+    }
+
+    table.table1 td:first-child {
+      text-align: left;
+      max-width: 70%;
+      padding-right: 20px;
+    }
+
+    table.table1 td select {
+      width: 150px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background-color: #222;
+      color: #eee;
+      font-size: 14px;
+    }
+
+    table.table1 td select option {
+      background-color: #222;
+      color: #eee;
+    }
+
+    table.table1 input[type="submit"] {
+      background-color: #00c2cb;
+      color: #fff;
+      border: none;
+      padding: 10px 28px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    table.table1 input[type="submit"]:hover {
+      background-color: #009ea4;
+    }
+
+    hr.green-line {
+      border: 0;
+      height: 2px;
+      background-color: #1a5e1a;
+      margin: 15px 0;
+    }

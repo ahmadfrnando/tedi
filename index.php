@@ -9,9 +9,7 @@ if (!isset($_SESSION['login'])) {
 
 require 'function.php';
 
-$query = "SELECT p.pertanyaan, p.no_urut, k.kategori
-FROM pertanyaan p
-LEFT JOIN ref_kategori k ON p.id_kategori = k.id";
+$query = "SELECT pertanyaan, no_urut, id_kategori FROM pertanyaan";
 $result = mysqli_query($conn, $query);
 
 $pertanyaan = [];

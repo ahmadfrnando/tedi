@@ -18,39 +18,28 @@ if (!$data_pertanyaan) {
 }
 
 $data_kategori = mysqli_query($conn, "SELECT kategori_en FROM ref_kategori");
-$data_kategori = mysqli_fetch_all($data_kategori, MYSQLI_ASSOC);
 
 $rata_rata = $data_pertanyaan['rata_rata_penilaian'];
 $total = $data_pertanyaan['total_penilaian'];
 $tingkat = $data_pertanyaan['tingkat_kepuasan'];
 
 
+// $labels = ['Rata-rata'];
+// $data = [$rata_rata];
 
-$data_pertanyaan = [
-    0 => (float)($data_pertanyaan['persepsi0'] + $data_pertanyaan['persepsi1']) / 2,
-    1 => (float)($data_pertanyaan['persepsi2'] + $data_pertanyaan['persepsi3']) / 2,
-    2 => (float)($data_pertanyaan['persepsi4'] + $data_pertanyaan['persepsi5']) / 2,
-    3 => (float)($data_pertanyaan['persepsi6'] + $data_pertanyaan['persepsi7']) / 2,
-    4 => (float)($data_pertanyaan['persepsi8'] + $data_pertanyaan['persepsi9']) / 2,
-];
-
-$jenis = [];
-for ($i=0; $i < 5; $i++) { 
-    if($data_pertanyaan[$i] < 5){
-        $jenis[] = $data_kategori[$i]['kategori_en'];
-    }
-}
-// var_dump($jenis); exit;
+// $labels_str = '"' . implode('", "', $labels) . '"';
+// $data_str = implode(", ", $data);
 
 $labels = [];
 $data = [];
 
-for ($i = 0; $i < 5; $i++) {
-    $labels[] = $data_kategori[$i]['kategori_en'];
-    $data[] = $data_pertanyaan[$i];
+for ($i = 0; $i < 10; $i++) {
+    $labels[] = "Pertanyaan " . ($i + 1);
+    $data[] = $data_pertanyaan["persepsi$i"];
 }
-// var_dump($labels); exit;
 
+$labels_str = '"' . implode('", "', $labels) . '"';
+$data_str = implode(", ", $data);
 $nama = mysqli_fetch_assoc(mysqli_query($conn, "SELECT username FROM user WHERE id = $userId"));
 $nomor = mysqli_fetch_assoc(mysqli_query($conn, "SELECT nomor FROM user WHERE id = $userId"));
 
@@ -67,8 +56,6 @@ if ($rata_rata >= 4.5) {
 } else {
     $warna = "dark";
 }
-
-
 ?>
 
 
@@ -146,14 +133,13 @@ if ($rata_rata >= 4.5) {
         }
 
         /* Info Box */
-        .hasil-card .card-body .info-box,
-        {
-        flex: 1;
-        margin: 10px;
-        text-align: center;
-        background: var(--bg-color);
-        border-radius: 10px;
-        padding: 20px;
+        .hasil-card .card-body .info-box {
+            flex: 1;
+            margin: 10px;
+            text-align: center;
+            background: var(--bg-color);
+            border-radius: 10px;
+            padding: 20px;
         }
 
         .info-box h5 {
@@ -260,7 +246,7 @@ if ($rata_rata >= 4.5) {
             <button class="btn btn-back kembali" onclick="backToDashboard()">Kembali</button>
             <div class="card shadow hasil-card">
                 <div class="card-header">
-                    <h3 class="text-center">HASIL KUESIONER (<?= implode(' ', $nomor) . ' - ' . implode(' ', $nama); ?>)</h3>
+                    <h3 class="text-center">HASIL KUESIONER (<?= implode(' ', $nomor) .' - '. implode(' ', $nama);?>)</h3>
                 </div>
                 <div class="card-body">
                     <div class="flex-row">
@@ -282,25 +268,6 @@ if ($rata_rata >= 4.5) {
 
                     <div class="chart-container">
                         <canvas id="myChart"></canvas>
-                    </div>
-                    <div class="info-box">
-                        <h5>Saran</h5>
-                        <p>
-                            <?php
-                            if (is_array($jenis)) {
-                                $jenis_count = count($jenis);
-                                if ($jenis_count > 1) {
-                                    $last = array_pop($jenis);
-                                    $jenis_text = implode(', ', $jenis) . ' dan ' . $last;
-                                } else {
-                                    $jenis_text = $jenis[0];
-                                }
-                            } else {
-                                $jenis_text = $jenis;
-                            }
-                            ?>
-                            <?= $jenis_text; ?> lebih ditingkatkan.
-                        </p>
                     </div>
                 </div>
             </div>
@@ -329,6 +296,7 @@ if ($rata_rata >= 4.5) {
                    Typed Js
     =========================================== -->
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+
     <!-- ==========================================
                   Custom Js
     =========================================== -->
@@ -338,17 +306,14 @@ if ($rata_rata >= 4.5) {
             // Contoh redirect ke halaman detail, sesuaikan URL
             window.location.href = '/admin'
         }
-        const data = <?php echo json_encode($data); ?>;
-        const labels = <?php echo json_encode($labels); ?>;
-        console.log(labels);
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: labels, // "Pertanyaan 1", ..., "Pertanyaan 10"
+                labels: [<?= $labels_str ?>], // "Pertanyaan 1", ..., "Pertanyaan 10"
                 datasets: [{
-                    label: 'Nilai per kategori',
-                    data: data, // Nilai dari persepsi0 sampai persepsi9
+                    label: 'Nilai per Pertanyaan',
+                    data: [<?= $data_str ?>], // Nilai dari persepsi0 sampai persepsi9
                     backgroundColor: 'rgba(0,194,203,0.7)',
                     // backgroundColor: '#00fbff',
                     borderColor: 'rgba(0,194,203,0.7)',

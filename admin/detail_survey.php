@@ -17,7 +17,7 @@ if (!$data_pertanyaan) {
     die("Data tidak ditemukan.");
 }
 
-$data_kategori = mysqli_query($conn, "SELECT kategori_en FROM ref_kategori");
+$data_kategori = mysqli_query($conn, "SELECT * FROM ref_kategori");
 $data_kategori = mysqli_fetch_all($data_kategori, MYSQLI_ASSOC);
 
 $rata_rata = $data_pertanyaan['rata_rata_penilaian'];
@@ -37,7 +37,7 @@ $data_pertanyaan = [
 $jenis = [];
 for ($i=0; $i < 5; $i++) { 
     if($data_pertanyaan[$i] < 5){
-        $jenis[] = $data_kategori[$i]['kategori_en'];
+        $jenis[] = $data_kategori[$i]['kategori'];
     }
 }
 // var_dump($jenis); exit;
